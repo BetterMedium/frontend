@@ -2,6 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
   /* Palette */
@@ -84,3 +85,10 @@ a {
   max-width: 100%;;
 }
 
+.prose h2 {
+  font-family: 'Inter', sans-serif !important;
+}
+
+.prose h3 {
+  font-family: 'Inter', sans-serif !important;
+}
