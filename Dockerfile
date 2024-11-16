@@ -30,6 +30,13 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
+# Set environment variables from Docker ENV
+ARG NEXT_PUBLIC_WC_PROJECT_ID
+ARG NEXT_PUBLIC_CDP_API_KEY
+
+ENV NEXT_PUBLIC_WC_PROJECT_ID=${NEXT_PUBLIC_WC_PROJECT_ID}
+ENV NEXT_PUBLIC_CDP_API_KEY=${NEXT_PUBLIC_CDP_API_KEY}
+
 USER nextjs
 
 EXPOSE 3000
