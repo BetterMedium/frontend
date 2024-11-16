@@ -12,7 +12,6 @@ import SignupButton from "src/components/SignupButton";
 import { useMemo, useState } from "react";
 import MarkdownRenderer from "src/components/MarkdownRenderer";
 import TransactionWrapper from "src/components/TransactionWrapper";
-import { NEXT_PUBLIC_WORLD_APP_ID } from "../../../config";
 
 
 export default function Page() {
@@ -96,15 +95,13 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
   const [hasAccess, setHasAccess] = useState(false);
 
   const verifyProof = async (proof: ISuccessResult) => {
-    console.log({ proof });
-    const response = await fetch("/api/verify", {
+    await fetch("/api/verify", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ proof, signal: address }),
     });
-    console.log({ response });
   };
 
   // TODO: Functionality after verifying
@@ -113,10 +110,7 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
     setHasAccess(true);
   };
 
-  if (!NEXT_PUBLIC_WORLD_APP_ID) {
-    throw new Error("NEXT_PUBLIC_WORLD_APP_ID not provided");
-  }
-
+  // @ts-ignore
   return (
     <div className="flex h-full w-full flex-col px-2">
       <section className="mt-3 mb-6 flex w-full flex-col md:flex-row">
@@ -128,11 +122,46 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
           </div>
         </div>
       </section>
-      <section className="max-w-[45%] mx-auto templateSection flex w-full flex-col items-center justify-center gap-4 rounded-xl px-2 py-4 md:grow font-['Charter'] prose prose-lg">
+      <section className="max-w-[45%] mx-auto templateSection flex w-full flex-col items-center justify-center gap-4 rounded-xl px-2 py-4 md:grow prose prose-lg">
         <h1 className="text-3xl font-bold text-center font-['Inter']">
           The Power of Micropayments: Revolutionizing Access to Knowledge
         </h1>
-        <MarkdownRenderer markdown={hasAccess ? article : articleBrief} />
+        <div className="relative">
+          <MarkdownRenderer markdown={hasAccess ? article : articleBrief} />
+          {!hasAccess && (
+            <>
+              <div className="absolute inset-x-0 top-[100px] h-[32px] bg-gradient-to-b from-transparent to-white" />
+              <div className="absolute inset-x-0 top-[132px] bottom-0 bg-white">
+                <div className="flex justify-center py-6">
+                  <div className="max-w-md text-center px-6 border border-gray-200 rounded-3xl p-6 shadow-sm">
+                    <p className="text-lg font-['Inter'] text-gray-700 mb-4">
+                      Read this article from <span className="font-semibold">Jane</span> — and all the best articles on Superium.
+                    </p>
+                    <p className="text-base font-['Inter'] text-gray-600 mb-6">
+                      The author made this article private. Verify with World ID or pay with crypto to instantly unlock this article.
+                    </p>
+                    <div className="text-left text-gray-600 font-['Inter'] text-sm">
+                      <ul className="space-y-2">
+                        <li className="flex items-center">
+                          <span className="mr-2">✨</span>
+                          Get unlimited access to all articles
+                        </li>
+                        <li className="flex items-center">
+                          <span className="mr-2">🚀</span>
+                          Support quality content creators
+                        </li>
+                        <li className="flex items-center">
+                          <span className="mr-2">💡</span>
+                          Join our growing community of readers
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
         {!hasAccess && (
           <>
             {address ? (
@@ -140,7 +169,7 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
                 <div>
                   <div>
                     <IDKitWidget
-                      app_id={NEXT_PUBLIC_WORLD_APP_ID}
+                      app_id="app_staging_83b4654e03ce5f3b5a21d359e10c70c5"
                       action="verify"
                       signal={address}
                       verification_level={VerificationLevel.Device}
@@ -149,7 +178,7 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
                     >
                       {({ open }) => (
                         <button
-                          className="bg-black w-[250px] hover:bg-slate-800 text-[white] rounded-3xl py-2 font-['Inter'] mt-10"
+                          className="bg-black w-[250px] hover:bg-slate-800 text-[white] rounded-3xl py-2 font-['Inter'] mt-10 align-middle font-bold"
                           onClick={open}
                         >
                           Verify with World ID
