@@ -6,7 +6,12 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const { proof, signal } = req.body;
-  const app_id = "app_staging_83b4654e03ce5f3b5a21d359e10c70c5";
+  const app_id = process.env.NEXT_PUBLIC_WORLD_APP_ID as
+    | `app_${string}`
+    | undefined;
+  if (!app_id) {
+    throw new Error("Missing NEXT_PUBLIC_WORLD_APP_ID");
+  }
   const action = "verify";
   const verifyRes = (await verifyCloudProof(
     proof,

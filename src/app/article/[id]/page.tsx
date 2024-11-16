@@ -14,7 +14,6 @@ import MarkdownRenderer from "src/components/MarkdownRenderer";
 import TransactionWrapper from "src/components/TransactionWrapper";
 import { NEXT_PUBLIC_WORLD_APP_ID } from "../../../config";
 
-
 export default function Page() {
   const { address } = useAccount();
   const articleBrief = useMemo(
@@ -91,7 +90,6 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
 `,
     [],
   );
- 
 
   const [hasAccess, setHasAccess] = useState(false);
 
@@ -121,7 +119,9 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
     <div className="flex h-full w-full flex-col px-2">
       <section className="mt-3 mb-6 flex w-full flex-col md:flex-row">
         <div className="flex w-full flex-row items-center justify-between gap-2 md:gap-0">
-          <span className="ml-10 font-bold text-2xl"><a href="/">Superium</a></span>
+          <span className="ml-10 font-bold text-2xl">
+            <a href="/">Superium</a>
+          </span>
           <div className="flex items-center gap-3 pr-10">
             <SignupButton />
             {!address && <LoginButton />}
