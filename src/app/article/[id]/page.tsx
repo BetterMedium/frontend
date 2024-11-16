@@ -12,6 +12,7 @@ import SignupButton from "src/components/SignupButton";
 import { useMemo, useState } from "react";
 import MarkdownRenderer from "src/components/MarkdownRenderer";
 import TransactionWrapper from "src/components/TransactionWrapper";
+import { NEXT_PUBLIC_WORLD_APP_ID } from "../../../config";
 
 
 export default function Page() {
@@ -95,13 +96,15 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
   const [hasAccess, setHasAccess] = useState(false);
 
   const verifyProof = async (proof: ISuccessResult) => {
-    await fetch("/api/verify", {
+    console.log({ proof });
+    const response = await fetch("/api/verify", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ proof, signal: address }),
     });
+    console.log({ response });
   };
 
   // TODO: Functionality after verifying
@@ -110,7 +113,10 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
     setHasAccess(true);
   };
 
-  // @ts-ignore
+  if (!NEXT_PUBLIC_WORLD_APP_ID) {
+    throw new Error("NEXT_PUBLIC_WORLD_APP_ID not provided");
+  }
+
   return (
     <div className="flex h-full w-full flex-col px-2">
       <section className="mt-3 mb-6 flex w-full flex-col md:flex-row">
@@ -134,7 +140,7 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
                 <div>
                   <div>
                     <IDKitWidget
-                      app_id="app_staging_83b4654e03ce5f3b5a21d359e10c70c5"
+                      app_id={NEXT_PUBLIC_WORLD_APP_ID}
                       action="verify"
                       signal={address}
                       verification_level={VerificationLevel.Device}
