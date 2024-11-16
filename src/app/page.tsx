@@ -6,6 +6,7 @@ import { useAccount } from "wagmi";
 import LoginButton from "../components/LoginButton";
 import SignupButton from "../components/SignupButton";
 import { useMemo } from "react";
+import MarkdownRenderer from "../components/MarkdownRenderer";
 
 export default function Page() {
   const { address } = useAccount();
@@ -107,6 +108,7 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
         <h1 className="text-2xl font-bold">
           The Power of Micropayments: Revolutionizing Access to Knowledge
         </h1>
+        <MarkdownRenderer markdown={article} />
         {address ? (
           <TransactionWrapper address={address} />
         ) : (
