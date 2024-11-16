@@ -5,16 +5,14 @@ import WalletWrapper from "src/components/WalletWrapper";
 import { useAccount } from "wagmi";
 import LoginButton from "../components/LoginButton";
 import SignupButton from "../components/SignupButton";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import MarkdownRenderer from "../components/MarkdownRenderer";
 
 export default function Page() {
   const { address } = useAccount();
   const articleBrief = useMemo(
     () =>
-      `# The Power of Micropayments: Revolutionizing Access to Knowledge on Platforms Like Medium
-
-## Introduction
+      `## Introduction
 In a world driven by digital content, platforms like Medium have become a haven for readers and writers alike. These platforms thrive on subscriptions, allowing users to access a broad array of articles on diverse topics. However, not everyone wants or needs a full subscription, especially when their interest lies in reading just one or two articles. Micropayments, small and instant transactions for individual pieces of content, present a compelling alternative. They not only democratize access to knowledge but also provide a win-win model for readers, writers, and the platform itself.
 
 ## The Case for Micropayments
@@ -23,19 +21,12 @@ In a world driven by digital content, platforms like Medium have become a haven 
 Micropayments create an equitable ecosystem where readers can pay for exactly what they consume. For a casual reader, the commitment of a monthly subscription can feel excessive, especially if their interests are sporadic or niche. Micropayments allow users to read a single article by paying a nominal fee, making high-quality content accessible without the barrier of a full subscription.
 
 From the writer’s perspective, micropayments can serve as a direct metric of their content’s value. Writers can earn revenue directly proportional to their article's popularity, incentivizing quality over quantity. This mechanism can help writers cultivate a dedicated audience, even among those unwilling to subscribe.
-
-### 2. Expanding Audience Reach
-Subscriptions inherently limit access to a specific segment of users who are willing to commit financially. By implementing a micropayment system, platforms like Medium can tap into a vast audience of occasional readers. These are people who may not subscribe but are willing to pay for specific content that interests them.
-
-Micropayments lower the barrier to entry for casual readers, encouraging more people to engage with the platform. This expanded reach benefits writers by providing greater exposure and potential revenue streams.
 `,
     [],
   );
   const article = useMemo(
     () =>
-      `# The Power of Micropayments: Revolutionizing Access to Knowledge on Platforms Like Medium
-
-## Introduction
+      `## Introduction
 In a world driven by digital content, platforms like Medium have become a haven for readers and writers alike. These platforms thrive on subscriptions, allowing users to access a broad array of articles on diverse topics. However, not everyone wants or needs a full subscription, especially when their interest lies in reading just one or two articles. Micropayments, small and instant transactions for individual pieces of content, present a compelling alternative. They not only democratize access to knowledge but also provide a win-win model for readers, writers, and the platform itself.
 
 ## The Case for Micropayments
@@ -93,8 +84,10 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
 `,
     [],
   );
+
+  const [hasAccess, setHasAccess] = useState();
   return (
-    <div className="flex h-full w-96 max-w-full flex-col px-1 md:w-[1008px]">
+    <div className="flex h-full w-full flex-col px-2">
       <section className="mt-6 mb-6 flex w-full flex-col md:flex-row">
         <div className="flex w-full flex-row items-center justify-between gap-2 md:gap-0">
           <span className="font-bold text-2xl">BetterMedium</span>
@@ -104,17 +97,27 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
           </div>
         </div>
       </section>
-      <section className="templateSection flex w-full flex-col items-center justify-center gap-4 rounded-xl bg-gray-100 px-2 py-4 md:grow">
-        <h1 className="text-2xl font-bold">
+      <section className="max-w-[90%] mx-auto templateSection flex w-full flex-col items-center justify-center gap-4 rounded-xl px-2 py-4 md:grow">
+        <h1 className="text-4xl font-bold text-center">
           The Power of Micropayments: Revolutionizing Access to Knowledge
         </h1>
-        <MarkdownRenderer markdown={article} />
+        <MarkdownRenderer markdown={hasAccess ? article : articleBrief} />
         {address ? (
-          <TransactionWrapper address={address} />
+          <div className="flex flex-wrap">
+            <div>
+              Verify your account by WorldCoin for 20 articles per month
+              <TransactionWrapper address={address} />
+            </div>
+            Or
+            <div>
+              Pay for the article
+              <TransactionWrapper address={address} />
+            </div>
+          </div>
         ) : (
           <WalletWrapper
             className="w-[450px] max-w-full"
-            text="Sign in to transact"
+            text="Sign in to read more"
           />
         )}
       </section>
