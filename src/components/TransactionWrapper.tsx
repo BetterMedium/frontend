@@ -51,7 +51,7 @@ export default function TransactionWrapper({
         onError={handleError}
         onSuccess={handleSuccess}
       >
-        <TransactionButton className="mt-0 mr-auto ml-auto w-[250px] max-w-full text-[white]" />
+        <TransactionButton className="bg-slate-900 text-[#030712] hover:bg-slate-700 mt-10 mr-auto ml-auto w-[250px] max-w-full rounded-3xl font-['Inter']" />
         <TransactionStatus>
           <TransactionStatusLabel />
           <TransactionStatusAction />

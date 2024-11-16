@@ -13,6 +13,7 @@ import { useMemo, useState } from "react";
 import MarkdownRenderer from "src/components/MarkdownRenderer";
 import TransactionWrapper from "src/components/TransactionWrapper";
 
+
 export default function Page() {
   const { address } = useAccount();
   const articleBrief = useMemo(
@@ -89,6 +90,7 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
 `,
     [],
   );
+ 
 
   const [hasAccess, setHasAccess] = useState(false);
 
@@ -111,17 +113,17 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
   // @ts-ignore
   return (
     <div className="flex h-full w-full flex-col px-2">
-      <section className="mt-6 mb-6 flex w-full flex-col md:flex-row">
+      <section className="mt-3 mb-6 flex w-full flex-col md:flex-row">
         <div className="flex w-full flex-row items-center justify-between gap-2 md:gap-0">
-          <span className="font-bold text-2xl">BetterMedium</span>
-          <div className="flex items-center gap-3">
+          <span className="ml-10 font-bold text-2xl"><a href="/">Superium</a></span>
+          <div className="flex items-center gap-3 pr-10">
             <SignupButton />
             {!address && <LoginButton />}
           </div>
         </div>
       </section>
-      <section className="max-w-[90%] mx-auto templateSection flex w-full flex-col items-center justify-center gap-4 rounded-xl px-2 py-4 md:grow">
-        <h1 className="text-4xl font-bold text-center">
+      <section className="max-w-[45%] mx-auto templateSection flex w-full flex-col items-center justify-center gap-4 rounded-xl px-2 py-4 md:grow font-['Charter'] prose prose-lg">
+        <h1 className="text-3xl font-bold text-center font-['Inter']">
           The Power of Micropayments: Revolutionizing Access to Knowledge
         </h1>
         <MarkdownRenderer markdown={hasAccess ? article : articleBrief} />
@@ -130,7 +132,6 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
             {address ? (
               <div className="flex flex-wrap text-center">
                 <div>
-                  Verify your account by WorldCoin <br />
                   <div>
                     <IDKitWidget
                       app_id="app_staging_83b4654e03ce5f3b5a21d359e10c70c5"
@@ -142,7 +143,7 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
                     >
                       {({ open }) => (
                         <button
-                          className="bg-gray-700 w-[250px] text-[white] rounded-xl py-3"
+                          className="bg-black w-[250px] hover:bg-slate-800 text-[white] rounded-3xl py-2 font-['Inter'] mt-10"
                           onClick={open}
                         >
                           Verify with World ID
@@ -151,9 +152,8 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
                     </IDKitWidget>
                   </div>
                 </div>
-                <div className="p-4">Or</div>
+                <div className="p-4"></div>
                 <div>
-                  Pay for the article
                   <TransactionWrapper
                     address={address}
                     onSuccess={() => setHasAccess(true)}
@@ -162,8 +162,8 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
               </div>
             ) : (
               <WalletWrapper
-                className="w-[450px] max-w-full"
-                text="Sign in to read more"
+                className="w-[450px] max-w-full bg-black mt-5 hover:bg-slate-800"
+                text="Log in to read more"
               />
             )}
           </>
