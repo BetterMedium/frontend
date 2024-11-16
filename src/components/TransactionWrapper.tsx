@@ -1,50 +1,57 @@
-'use client';
+"use client";
+import type {
+  TransactionError,
+  TransactionResponse,
+} from "@coinbase/onchainkit/transaction";
 import {
   Transaction,
   TransactionButton,
   TransactionStatus,
   TransactionStatusAction,
   TransactionStatusLabel,
-} from '@coinbase/onchainkit/transaction';
-import type {
-  TransactionError,
-  TransactionResponse,
-} from '@coinbase/onchainkit/transaction';
-import type { Address, ContractFunctionParameters } from 'viem';
+} from "@coinbase/onchainkit/transaction";
+import type { Address, ContractFunctionParameters } from "viem";
 import {
   BASE_SEPOLIA_CHAIN_ID,
   mintABI,
   mintContractAddress,
-} from '../constants';
+} from "../constants";
 
-export default function TransactionWrapper({ address }: { address: Address }) {
+export default function TransactionWrapper({
+  address,
+  onSuccess,
+}: {
+  address: Address;
+  onSuccess: Function;
+}) {
   const contracts = [
     {
       address: mintContractAddress,
       abi: mintABI,
-      functionName: 'mint',
+      functionName: "mint",
       args: [address],
     },
   ] as unknown as ContractFunctionParameters[];
 
   const handleError = (err: TransactionError) => {
-    console.error('Transaction error:', err);
+    console.error("Transaction error:", err);
   };
 
   const handleSuccess = (response: TransactionResponse) => {
-    console.log('Transaction successful', response);
+    console.log("Transaction successful", response);
+    onSuccess();
   };
 
   return (
-    <div className="flex w-[450px]">
+    <div className="flex w-[250px]">
       <Transaction
         contracts={contracts}
-        className="w-[450px]"
+        className="w-[250px]"
         chainId={BASE_SEPOLIA_CHAIN_ID}
         onError={handleError}
         onSuccess={handleSuccess}
       >
-        <TransactionButton className="mt-0 mr-auto ml-auto w-[450px] max-w-full text-[white]" />
+        <TransactionButton className="mt-0 mr-auto ml-auto w-[250px] max-w-full text-[white]" />
         <TransactionStatus>
           <TransactionStatusLabel />
           <TransactionStatusAction />

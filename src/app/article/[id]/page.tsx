@@ -1,12 +1,17 @@
 "use client";
+import {
+  IDKitWidget,
+  ISuccessResult,
+  VerificationLevel,
+} from "@worldcoin/idkit";
 import Footer from "src/components/Footer";
-import TransactionWrapper from "src/components/TransactionWrapper";
 import WalletWrapper from "src/components/WalletWrapper";
 import { useAccount } from "wagmi";
-import LoginButton from "../components/LoginButton";
-import SignupButton from "../components/SignupButton";
+import LoginButton from "src/components/LoginButton";
+import SignupButton from "src/components/SignupButton";
 import { useMemo, useState } from "react";
-import MarkdownRenderer from "../components/MarkdownRenderer";
+import MarkdownRenderer from "src/components/MarkdownRenderer";
+import TransactionWrapper from "src/components/TransactionWrapper";
 
 export default function Page() {
   const { address } = useAccount();
@@ -85,7 +90,25 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
     [],
   );
 
-  const [hasAccess, setHasAccess] = useState();
+  const [hasAccess, setHasAccess] = useState(false);
+
+  const verifyProof = async (proof: ISuccessResult) => {
+    await fetch("/api/verify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ proof, signal: address }),
+    });
+  };
+
+  // TODO: Functionality after verifying
+  const onSuccess = () => {
+    alert("Success");
+    setHasAccess(true);
+  };
+
+  // @ts-ignore
   return (
     <div className="flex h-full w-full flex-col px-2">
       <section className="mt-6 mb-6 flex w-full flex-col md:flex-row">
@@ -102,23 +125,48 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
           The Power of Micropayments: Revolutionizing Access to Knowledge
         </h1>
         <MarkdownRenderer markdown={hasAccess ? article : articleBrief} />
-        {address ? (
-          <div className="flex flex-wrap">
-            <div>
-              Verify your account by WorldCoin for 20 articles per month
-              <TransactionWrapper address={address} />
-            </div>
-            Or
-            <div>
-              Pay for the article
-              <TransactionWrapper address={address} />
-            </div>
-          </div>
-        ) : (
-          <WalletWrapper
-            className="w-[450px] max-w-full"
-            text="Sign in to read more"
-          />
+        {!hasAccess && (
+          <>
+            {address ? (
+              <div className="flex flex-wrap text-center">
+                <div>
+                  Verify your account by WorldCoin <br />
+                  <div>
+                    <IDKitWidget
+                      app_id="app_staging_83b4654e03ce5f3b5a21d359e10c70c5"
+                      action="verify"
+                      signal={address}
+                      verification_level={VerificationLevel.Device}
+                      handleVerify={verifyProof}
+                      onSuccess={onSuccess}
+                    >
+                      {({ open }) => (
+                        <button
+                          className="bg-gray-700 w-[250px] text-[white] rounded-xl py-3"
+                          onClick={open}
+                        >
+                          Verify with World ID
+                        </button>
+                      )}
+                    </IDKitWidget>
+                  </div>
+                </div>
+                <div className="p-4">Or</div>
+                <div>
+                  Pay for the article
+                  <TransactionWrapper
+                    address={address}
+                    onSuccess={() => setHasAccess(true)}
+                  />
+                </div>
+              </div>
+            ) : (
+              <WalletWrapper
+                className="w-[450px] max-w-full"
+                text="Sign in to read more"
+              />
+            )}
+          </>
         )}
       </section>
       <Footer />
