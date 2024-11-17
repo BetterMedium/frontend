@@ -101,11 +101,9 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
 
   // TODO: Functionality after verifying
   const onSuccess = () => {
-    alert("Success");
     setHasAccess(true);
   };
 
-  // @ts-ignore
   return (
     <div className="flex h-full w-full flex-col px-2">
       <section className="mt-3 mb-6 flex w-full flex-col md:flex-row">
@@ -132,10 +130,13 @@ Micropayments are more than just a trend—they’re a necessity in today’s di
                 <div className="flex justify-center py-6">
                   <div className="max-w-md text-center px-6 border border-gray-200 rounded-3xl p-6 shadow-sm">
                     <p className="text-lg font-['Inter'] text-gray-700 mb-4">
-                      Read this article from <span className="font-semibold">Jane</span> — and all the best articles on Superium.
+                      Read this article from{" "}
+                      <span className="font-semibold">Jane</span> — and all the
+                      best articles on Superium.
                     </p>
                     <p className="text-base font-['Inter'] text-gray-600 mb-6">
-                      The author made this article private. Verify with World ID or pay with crypto to instantly unlock this article.
+                      The author made this article private. Verify with World ID
+                      or pay with crypto to instantly unlock this article.
                     </p>
                     <div className="text-left text-gray-600 font-['Inter'] text-sm">
                       <ul className="space-y-2">
